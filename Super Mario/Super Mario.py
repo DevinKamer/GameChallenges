@@ -125,10 +125,12 @@ curY = 0
 jump = False
 canJump = True
 gravity = 0
-music = pygame.mixer.music.load(curDir + "/Super Mario Bros Theme.mp3")
+music = pygame.mixer.music.load(curDir + "/Sounds/Super Mario Bros Theme.ogg")
+jumpSound = pygame.mixer.Sound(curDir + "/Sounds/jumpSmall.ogg")
+breakBlock = pygame.mixer.Sound(curDir +"/Sounds/breakBlock.ogg")
 
 ground = []
-for i in range(size[0] / 64):
+for i in range(size[0] // 64):
     ground.append(Platform(64 * i, size[1] - 64))
 
 ground.remove(ground[4])
@@ -179,6 +181,7 @@ while not done:
                 bricks[i].isHit = True
                 hitBlock = True
                 bricks.remove(bricks[i])
+                breakBlock.play()
             elif bricks[i].rect.collidepoint(mario.rect.midbottom):
                 touching = bricks[i]
             elif bricks[i].rect.collidepoint(mario.rect.midleft):
@@ -193,6 +196,8 @@ while not done:
         jump = False
         touching = None
         canJump = False
+        jumpSound.play()
+        
 
     if touching:
         gravity = 0
